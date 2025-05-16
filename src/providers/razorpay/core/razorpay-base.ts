@@ -528,7 +528,39 @@ abstract class RazorpayBase extends AbstractPaymentProvider {
   async capturePayment(
     paymentSessionData: CapturePaymentInput
   ): Promise<CapturePaymentOutput> {
-    const order_id = (paymentSessionData?.data as any)?.data?.id;
+
+    
+    // Extract order_id safely from potentially nested data structure
+    const extractOrderData = (paymentSessionData: any): { id: string } | undefined => {
+      // Case 1: data.data.data.id structure
+      if (paymentSessionData?.data?.data?.data?.data?.id) {
+        return paymentSessionData.data.data.data.data;
+      }
+      // Case 1: data.data.data.id structure
+      if (paymentSessionData?.data?.data?.data?.id) {
+        return paymentSessionData.data.data.data;
+      }
+      // Case 2: data.data.id structure
+      else if (paymentSessionData?.data?.data?.id) {
+        return paymentSessionData.data.data;
+      }
+      // Case 3: direct data.id structure
+      else if (paymentSessionData?.data?.id) {
+        return paymentSessionData.data;
+      }
+
+      return undefined;
+    };
+    const orderData = extractOrderData(paymentSessionData);
+    if (!orderData) {
+      this.logger.error("Unable to extract order data from payment session");
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Unable to extract order data",
+        MedusaError.Codes.UNKNOWN_MODULES
+      );
+    }
+    const order_id = orderData?.id as string;
 
     const paymentsResponse = await this.razorpay_.orders.fetchPayments(
       order_id

@@ -1,6 +1,6 @@
 {
-  "name": "@tsc_tech/medusa-plugin-razorpay-payment",
-  "version": "0.0.10",
+  "name": "@arkonesoft/medusa-plugin-razorpay-payment",
+  "version": "0.0.12",
   "description": "A starter for Medusa plugins.",
   "author": "Medusa (https://medusajs.com)",
   "license": "MIT",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/the-special-character/-tsc-medusa-plugin-razorpay-payment"
+    "url": "https://github.com/ArkOne-Softwares/medusa-plugin-razorpay-payment"
   },
   "keywords": [
     "medusa",
